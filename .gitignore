@@ -1,0 +1,23 @@
+# Python 编译缓存与包元数据
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# 运行时产物（实验日志、切片、特征、索引、权重）
+logs/
+TEMP/
+assets/indices/
+assets/weights/
+.model-downloads/
+
+# 本地虚拟环境与嵌入式运行时
+.venv/
+runtime/
+venv/
+
+# 本地临时验证目录
+.tmp_verify/
+
+# AI 助手记忆与指令文件
+MEMORY.md
+AGENTS.md

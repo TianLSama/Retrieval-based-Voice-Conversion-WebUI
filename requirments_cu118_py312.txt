@@ -40,7 +40,7 @@ pymss-core==0.1.4
 # Windows wheels. The CUDA DLL packages are pinned because later cuDNN/CUDA
 # majors are ABI-incompatible with this provider build.
 onnxruntime-gpu>=1.18.0,<1.19
-nvidia-cudnn-cu11==8.9.5.29
+nvidia-cudnn-cu11==8.9.5.30
 nvidia-cublas-cu11==11.11.3.6
 nvidia-cuda-runtime-cu11==11.8.89
 nvidia-cuda-nvrtc-cu11==11.8.89

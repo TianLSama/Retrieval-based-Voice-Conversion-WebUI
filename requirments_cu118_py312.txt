@@ -36,20 +36,12 @@ numpy>=1.26.4,<2
 pymss==2.0.14
 pymss-core==0.1.4
 
-# onnxruntime 只被 DirectML(privateuseone) 推理路径使用（infer/rmvpe.py），
-# 因此仅 Windows 需要固定在 CUDA 11 / cuDNN 8 的 1.18.x 轮子。
-#
-# Linux 上不要钉 cuDNN 8：PyTorch 2.7.1+cu118 的 Linux 轮子自带
-# nvidia-*-cu11 依赖，其中 nvidia-cudnn-cu11==9.1.0.70。若在 Linux 也钉 8.x，
-# pip 为满足该 pin 会卸载 cudnn 9 并把 torch 换成 PyPI 默认的 cu126 构建，
-# 结果 import torch 报 `libcudnn.so.9: cannot open shared object file`。
 onnxruntime-gpu>=1.18.0,<1.19; sys_platform == "win32"
 nvidia-cudnn-cu11==8.9.5.29; sys_platform == "win32"
 nvidia-cublas-cu11==11.11.3.6; sys_platform == "win32"
 nvidia-cuda-runtime-cu11==11.8.89; sys_platform == "win32"
 nvidia-cuda-nvrtc-cu11==11.8.89; sys_platform == "win32"
 nvidia-cufft-cu11==10.9.0.58; sys_platform == "win32"
-# Linux 与 torch 2.7.1+cu118 轮子的依赖保持一致，避免 pip 重新解析 torch
 nvidia-cudnn-cu11==9.1.0.70; sys_platform != "win32"
 
 opencv-python-headless>=4.10.0,<5

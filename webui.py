@@ -41,6 +41,25 @@ for name in os.listdir(tmp):
     except Exception as error:
         print(str(error))
 
+
+def ensure_rmvpe_layout():
+    """兼容旧安装脚本把 rmvpe.pt 放在 assets/rmvpe.pt 的情况。"""
+    legacy = os.path.join(now_dir, "assets", "rmvpe.pt")
+    target_dir = os.path.join(now_dir, "assets", "rmvpe")
+    target = os.path.join(target_dir, "rmvpe.pt")
+    if os.path.isfile(target) or not os.path.isfile(legacy):
+        return
+    os.makedirs(target_dir, exist_ok=True)
+    try:
+        os.link(legacy, target)
+    except OSError:
+        shutil.copy2(legacy, target)
+    print("rmvpe 模型路径已兼容：%s -> %s" % (legacy, target))
+
+
+ensure_rmvpe_layout()
+
+
 from configs.config import Config, GPU_INDEX, GPU_INFOS, GPU_MEMORY, IS_GPU
 from infer.vc.modules import VC
 from infer.vc.utils import get_index_path_from_model

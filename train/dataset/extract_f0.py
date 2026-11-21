@@ -17,6 +17,15 @@ i18n = I18nAuto()
 logging.getLogger("numba").setLevel(logging.WARNING)
 from multiprocessing import Process
 
+
+
+def resolve_rmvpe_model():
+    """返回实际存在的 RMVPE 权重路径，兼容旧版放在 assets/rmvpe.pt 的布局。"""
+    for candidate in ("assets/rmvpe/rmvpe.pt", "assets/rmvpe.pt"):
+        if os.path.isfile(candidate):
+            return candidate
+    return "assets/rmvpe/rmvpe.pt"
+
 mode = sys.argv[1].lower()
 if mode == "cpu":
     exp_dir = sys.argv[2]
@@ -94,7 +103,7 @@ class FeatureInput(object):
 
                 printt(i18n("正在加载RMVPE模型"))
                 self.model_rmvpe = RMVPE(
-                    "assets/rmvpe/rmvpe.pt", is_half=is_half, device=device
+                    resolve_rmvpe_model(), is_half=is_half, device=device
                 )
             f0 = self.model_rmvpe.infer_from_audio(x, thred=0.03)
         f0 = np.asarray(f0)

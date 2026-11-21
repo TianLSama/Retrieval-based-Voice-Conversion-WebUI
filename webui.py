@@ -206,6 +206,29 @@ def weight_names():
     )
 
 
+def resolve_input_path(path_value):
+    """规范化用户填写的目录：展开 ~/$变量、补全相对路径、校验存在。"""
+    text = str(path_value or "").strip().strip('"').strip("'")
+    if not text:
+        raise RuntimeError(i18n("请填写训练集文件夹路径"))
+    text = os.path.expandvars(os.path.expanduser(text))
+    if not os.path.isabs(text):
+        relative = os.path.normpath(os.path.join(now_dir, text))
+        absolute = os.path.normpath(os.sep + text)
+        text = (
+            relative
+            if os.path.isdir(relative) or not os.path.isdir(absolute)
+            else absolute
+        )
+    text = os.path.normpath(text)
+    if not os.path.isdir(text):
+        raise RuntimeError(
+            i18n("训练集文件夹不存在：%s；请填写绝对路径，例如 %s/input/你的文件夹")
+            % (text, now_dir)
+        )
+    return text
+
+
 def refresh_weight_choices(previous_names=None, force=False):
     current_names = tuple(weight_names())
     if force or current_names != previous_names:
@@ -853,6 +876,7 @@ def wait_train_processes(
 def run_preprocess_dataset(
     trainset_dir, exp_dir, sr, n_p, state, format_output=True, training_mode=None
 ):
+    trainset_dir = resolve_input_path(trainset_dir)
     sr = sr_dict[sr]
     os.makedirs("%s/logs/%s" % (now_dir, exp_dir), exist_ok=True)
     if is_multispeaker_mode(training_mode):

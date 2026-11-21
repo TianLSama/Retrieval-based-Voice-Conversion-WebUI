@@ -4,7 +4,7 @@ import sys
 
 from scipy import signal
 
-inp_root = sys.argv[1]
+inp_root = os.path.expandvars(os.path.expanduser(sys.argv[1]))
 sr = int(sys.argv[2])
 n_p = int(sys.argv[3])
 exp_dir = sys.argv[4]
